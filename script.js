@@ -12,12 +12,14 @@
 
   // ──────────────  Sticky-nav shadow on scroll  ──────────────
   const nav = document.getElementById('nav');
-  const onScroll = () => {
-    if (window.scrollY > 24) nav.classList.add('is-scrolled');
-    else nav.classList.remove('is-scrolled');
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  if (nav) {
+    const onScroll = () => {
+      if (window.scrollY > 24) nav.classList.add('is-scrolled');
+      else nav.classList.remove('is-scrolled');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
 
   // ──────────────  Mobile menu toggle  ──────────────
   const toggle = document.querySelector('.nav-toggle');
@@ -40,15 +42,15 @@
     });
   }
 
-  // ──────────────  Scroll-reveal — tag elements & observe  ──────────────
-  // We add .reveal to a sensible set of elements, then observe them.
+  // ──────────────  Scroll-reveal  ──────────────
   const revealTargets = [
     '.section-head',
     '.about-text',
     '.about-stats',
     '.pillar',
-    '.card',
-    '.magazine-cover',
+    '.ev-card',
+    '.events-cta',
+    '.magazine-cover-wrap',
     '.magazine-text',
     '.voice',
     '.team-block',
@@ -58,8 +60,7 @@
   const reveals = document.querySelectorAll(revealTargets.join(','));
   reveals.forEach((el, i) => {
     el.classList.add('reveal');
-    // small stagger for siblings inside a grid
-    el.style.transitionDelay = (i % 6) * 70 + 'ms';
+    el.style.transitionDelay = (i % 5) * 70 + 'ms';
   });
 
   if ('IntersectionObserver' in window) {
@@ -74,21 +75,21 @@
 
     reveals.forEach(el => io.observe(el));
   } else {
-    // Fallback: just show them
     reveals.forEach(el => el.classList.add('is-in'));
   }
 
   // ──────────────  Form handling  ──────────────
-  // If a Formspree (or compatible) endpoint is set, we submit via fetch
-  // and show a friendly status. Otherwise we fall through to native submit.
+  // Netlify Forms is wired up via the data-netlify attribute, so a normal
+  // POST works once the site is live on Netlify. If you later switch to a
+  // Formspree-style endpoint, this submits via fetch and shows a status.
   const form   = document.getElementById('connect-form');
   const status = document.getElementById('form-status');
 
   if (form && status) {
     form.addEventListener('submit', async (e) => {
       const action = form.getAttribute('action') || '';
-      // If the endpoint is still the placeholder, just show a helpful note
-      // instead of submitting to a broken URL.
+
+      // If a placeholder endpoint is still in place, warn instead of breaking.
       if (action.includes('your-form-id')) {
         e.preventDefault();
         status.classList.add('is-error');
@@ -97,10 +98,10 @@
         return;
       }
 
-      // Only handle JSON-style endpoints (Formspree). For anything else,
-      // let the browser do its normal POST.
-      if (!/formspree\.io|netlify|formsubmit|getform\.io/.test(action)) {
-        return; // native submit
+      // Only intercept JSON-style endpoints (Formspree etc.). Otherwise let
+      // the browser do its normal POST — this is what Netlify Forms uses.
+      if (!/formspree\.io|formsubmit|getform\.io/.test(action)) {
+        return; // native submit (Netlify Forms path)
       }
 
       e.preventDefault();
