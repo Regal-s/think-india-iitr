@@ -6,11 +6,11 @@
 
 /* ─────────────────────────  TOKENS  ───────────────────────── */
 :root {
-  /* Palette — Midnight Bharat. */
-  --bg:          #10141c;       /* deep midnight navy-charcoal */
-  --surface:     #171c28;       /* sections, panels */
-  --surface-2:   #1f2536;       /* raised cards */
-  --surface-3:   #0c0f15;       /* deepest — magazine band */
+  /* Palette — Midnight Bharat (navy shift). */
+  --bg:          #080f1e;       /* deep midnight navy-blue */
+  --surface:     #0d1628;       /* sections, panels — blue navy */
+  --surface-2:   #152032;       /* raised cards — elevated navy */
+  --surface-3:   #060c18;       /* deepest — magazine band */
 
   --ink:         #ece6d8;       /* primary text — warm parchment */
   --ink-soft:    #b7b1a1;       /* secondary text */
@@ -31,6 +31,7 @@
   --f-body:    "Newsreader", "EB Garamond", Georgia, serif;
   --f-deva:    "Tiro Devanagari Sanskrit", "Newsreader", serif;
   --f-mono:    "DM Mono", "JetBrains Mono", ui-monospace, monospace;
+  --f-bold:    "Bebas Neue", "Anton", Impact, sans-serif;
 
   /* Spacing */
   --shell-pad-x: clamp(20px, 5vw, 80px);
@@ -126,9 +127,9 @@ body::before {
   color: var(--ink);
 }
 .brand-mark {
-  width: 34px; height: 34px;
-  color: var(--saffron);
+  width: auto; height: 38px;
   flex-shrink: 0;
+  object-fit: contain;
 }
 .brand-text { display: flex; flex-direction: column; line-height: 1.05; }
 .brand-name {
@@ -136,6 +137,17 @@ body::before {
   font-weight: 600;
   font-size: 19px;
   letter-spacing: 0.01em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.18em;
+}
+.brand-think {
+  font-family: var(--f-bold);
+  font-weight: 400;        /* Bebas Neue has no weight axis — 400 is its bold */
+  font-size: 24px;
+  letter-spacing: 0.06em;
+  color: var(--saffron);
+  line-height: 1;
 }
 .brand-sub {
   font-family: var(--f-mono);
@@ -253,13 +265,19 @@ body::before {
 }
 .hero-title-pre {
   display: block;
-  font-weight: 300;
-  font-style: italic;
+  font-family: var(--f-bold);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(3.2rem, 9vw, 9rem);
+  letter-spacing: 0.08em;
+  color: var(--saffron);
+  line-height: 0.9;
 }
 .hero-title-main {
   display: block;
-  font-weight: 600;
-  color: var(--saffron);
+  font-weight: 700;
+  color: var(--ink);
+  font-style: italic;
 }
 .hero-title-sub {
   display: block;
