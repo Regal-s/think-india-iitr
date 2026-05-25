@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events — Think India · IIT Roorkee</title>
+  <meta name="description" content="All 22 events by Think India, IIT Roorkee — conventions, debates, lectures, yatras, workshops, and service drives across 2024–2026." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Tiro+Devanagari+Sanskrit:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Events-page–specific styles ── */
+
+    .ev-hero {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: clamp(120px,18vh,200px) var(--shell-pad-x) clamp(48px,7vw,80px);
+      position: relative;
+    }
+    .ev-hero-glow {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: min(500px, 80vw);
+      height: 320px;
+      background: radial-gradient(ellipse, rgba(228,146,59,0.14) 0%, transparent 70%);
+      pointer-events: none;
+      filter: blur(12px);
+    }
+    .ev-hero-rule {
+      position: absolute;
+      top: clamp(100px,14vh,150px);
+      left: var(--shell-pad-x); right: var(--shell-pad-x);
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--line-strong) 14%, var(--line-strong) 86%, transparent);
+    }
+    .ev-hero-kicker {
+      font-family: var(--f-mono);
+      font-size: 11.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ev-hero-kicker a {
+      color: var(--ink-muted);
+      transition: color 0.2s;
+    }
+    .ev-hero-kicker a:hover { color: var(--saffron); }
+    .ev-hero-kicker span { color: var(--line-strong); }
+    .ev-hero-title {
+      font-family: var(--f-display);
+      font-weight: 300;
+      font-size: clamp(44px, 9vw, 110px);
+      line-height: 0.94;
+      letter-spacing: -0.025em;
+      margin: 0 0 clamp(20px,3vw,32px);
+      color: var(--ink);
+    }
+    .ev-hero-title em {
+      font-style: italic;
+      color: var(--saffron);
+    }
+    .ev-hero-deck {
+      font-size: clamp(16px,1.6vw,19px);
+      line-height: 1.6;
+      color: var(--ink-soft);
+      max-width: 54ch;
+      margin: 0;
+    }
+    .ev-hero-stats {
+      display: flex;
+      gap: clamp(24px,4vw,56px);
+      margin-top: clamp(32px,4vw,48px);
+      padding-top: clamp(24px,3vw,36px);
+      border-top: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+    .ev-hero-stat-num {
+      display: block;
+      font-family: var(--f-display);
+      font-weight: 500;
+      font-size: clamp(28px,4vw,46px);
+      line-height: 1;
+      color: var(--saffron);
+    }
+    .ev-hero-stat-label {
+      display: block;
+      font-family: var(--f-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-top: 6px;
+    }
+
+    /* ── Filter bar ── */
+    .ev-filters-wrap {
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 65px;
+      z-index: 20;
+    }
+    .ev-filters {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 14px var(--shell-pad-x);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .ev-filters::-webkit-scrollbar { display: none; }
+    .ev-filter-btn {
+      font-family: var(--f-mono);
+      font-size: 11.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      padding: 7px 14px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.22s var(--ease);
+    }
+    .ev-filter-btn:hover {
+      border-color: var(--line-strong);
+      color: var(--ink);
+    }
+    .ev-filter-btn.is-active {
+      background: var(--saffron);
+      border-color: var(--saffron);
+      color: var(--bg);
+    }
+
+    /* ── Events grid ── */
+    .ev-grid-wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: clamp(48px,7vw,80px) var(--shell-pad-x);
+    }
+    .ev-count {
+      font-family: var(--f-mono);
+      font-size: 11.5px;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      margin-bottom: 28px;
+    }
+    .ev-count strong { color: var(--gold); }
+
+    .ev-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(14px,2vw,24px);
+    }
+
+    /* card — reuse .ev-card from styles.css, extend here */
+    .ev-card { cursor: default; }
+    .ev-card[data-href] { cursor: pointer; }
+
+    /* No-image placeholder */
+    .ev-card-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-3);
+      position: relative;
+      overflow: hidden;
+    }
+    .ev-card-placeholder::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--placeholder-grad, linear-gradient(135deg, rgba(228,146,59,0.18) 0%, rgba(91,141,110,0.12) 100%));
+    }
+    .ev-card-placeholder-letter {
+      font-family: var(--f-display);
+      font-size: 72px;
+      font-weight: 600;
+      color: rgba(236,230,216,0.1);
+      position: relative;
+      z-index: 1;
+      user-select: none;
+    }
+
+    .ev-card-tag-debate   { background: #6b4fa0; }
+    .ev-card-tag-lecture  { background: #3a7c8a; }
+    .ev-card-tag-workshop { background: #5b6e3e; }
+    .ev-card-tag-cultural { background: #8a4a3a; }
+    .ev-card-tag-yatra    { background: var(--green); }
+    .ev-card-tag-swadeshi { background: #7a6030; }
+    .ev-card-tag-service  { background: #a03a3a; }
+    .ev-card-tag-civic    { background: #3a5a8a; }
+    .ev-card-tag-flagship { background: var(--saffron-deep); }
+    .ev-card-tag-career   { background: #4a6a5a; }
+
+    .ev-card.is-hidden { display: none; }
+
+    /* No results */
+    .ev-no-results {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 60px 0;
+      font-family: var(--f-display);
+      font-style: italic;
+      color: var(--ink-muted);
+      font-size: 20px;
+    }
+
+    /* Back to top */
+    .ev-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--f-mono);
+      font-size: 11.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      padding: clamp(32px,4vw,48px) var(--shell-pad-x);
+      max-width: var(--maxw);
+      margin: 0 auto;
+      display: flex;
+      transition: color 0.2s;
+    }
+    .ev-back:hover { color: var(--saffron); }
+    .ev-back svg { width: 14px; height: 14px; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .ev-grid { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 560px) {
+      .ev-grid { grid-template-columns: 1fr; }
+      .ev-hero-stats { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a href="index.html" class="brand" aria-label="Think India IIT Roorkee — home">
+      <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round">
+          <circle cx="24" cy="24" r="7.5" fill="currentColor" fill-opacity="0.1"/>
+          <line x1="24" y1="3" x2="24" y2="9"/>
+          <line x1="24" y1="39" x2="24" y2="45"/>
+          <line x1="3" y1="24" x2="9" y2="24"/>
+          <line x1="39" y1="24" x2="45" y2="24"/>
+          <line x1="9.1" y1="9.1" x2="13.4" y2="13.4"/>
+          <line x1="34.6" y1="34.6" x2="38.9" y2="38.9"/>
+          <line x1="38.9" y1="9.1" x2="34.6" y2="13.4"/>
+          <line x1="13.4" y1="34.6" x2="9.1" y2="38.9"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(22.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(67.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(112.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(157.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(202.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(247.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(292.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(337.5 24 24)"/>
+        </g>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">Think India</span>
+        <span class="brand-sub">IIT Roorkee</span>
+      </span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html#about">About</a>
+      <a href="index.html#pillars">Vision</a>
+      <a href="events.html" style="color:var(--saffron)">Events</a>
+      <a href="index.html#magazine">ऋतम्</a>
+      <a href="index.html#team">Team</a>
+      <a href="index.html#connect" class="nav-cta">Connect →</a>
+    </nav>
+
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- HERO -->
+  <div class="ev-hero">
+    <div class="ev-hero-glow" aria-hidden="true"></div>
+    <div class="ev-hero-rule" aria-hidden="true"></div>
+
+    <p class="ev-hero-kicker">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      Events Archive
+    </p>
+
+    <h1 class="ev-hero-title">A year<br>in <em>events.</em></h1>
+    <p class="ev-hero-deck">Twenty-two events across 2024–2026 — conventions, debates, yatras, lectures, workshops, and service drives. Every one of them a piece of Think India, IIT Roorkee.</p>
+
+    <div class="ev-hero-stats">
+      <div>
+        <span class="ev-hero-stat-num">22</span>
+        <span class="ev-hero-stat-label">Events documented</span>
+      </div>
+      <div>
+        <span class="ev-hero-stat-num">280<span style="color:var(--gold)">+</span></span>
+        <span class="ev-hero-stat-label">Convention delegates</span>
+      </div>
+      <div>
+        <span class="ev-hero-stat-num">2,000<span style="color:var(--gold)">+</span></span>
+        <span class="ev-hero-stat-label">Tiranga Yatra participants</span>
+      </div>
+      <div>
+        <span class="ev-hero-stat-num">5,000</span>
+        <span class="ev-hero-stat-label">Khadi Mela visitors</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="ev-filters-wrap">
+    <div class="ev-filters" role="group" aria-label="Filter events by category">
+      <button class="ev-filter-btn is-active" data-filter="all">All</button>
+      <button class="ev-filter-btn" data-filter="flagship">Flagship</button>
+      <button class="ev-filter-btn" data-filter="debate">Debate</button>
+      <button class="ev-filter-btn" data-filter="lecture">Lecture</button>
+      <button class="ev-filter-btn" data-filter="workshop">Workshop</button>
+      <button class="ev-filter-btn" data-filter="cultural">Cultural</button>
+      <button class="ev-filter-btn" data-filter="yatra">Yatra</button>
+      <button class="ev-filter-btn" data-filter="swadeshi">Swadeshi</button>
+      <button class="ev-filter-btn" data-filter="service">Service</button>
+      <button class="ev-filter-btn" data-filter="civic">Civic</button>
+      <button class="ev-filter-btn" data-filter="career">Career</button>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div class="ev-grid-wrap">
+    <p class="ev-count">Showing <strong id="ev-visible-count">22</strong> of 22 events</p>
+
+    <div class="ev-grid" id="ev-grid">
+
+      <!-- 01 · Ram Mandir Pran Pratistha Screening -->
+      <article class="ev-card reveal" data-category="cultural" id="ram-mandir">
+        <div class="ev-card-media">
+          <img src="images/event-ram-mandir.jpg" alt="Live screening of Ram Lalla Pran Pratistha at IIT Roorkee" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-cultural">Cultural</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Ram Mandir Pran Pratistha Screening</h3>
+          <p class="ev-card-text">Live screening of the Ram Lalla Pran Pratistha ceremony — a spiritually significant event organized as Think India IITR's very first event. 800+ campus community members attended; Deepotsav and prasad distribution followed.</p>
+          <div class="ev-card-meta">
+            <span>Jan 22, 2024</span><span class="ev-dot">·</span><span>170+ volunteers · 800+ attendees</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 02 · Chhatra Sansad 1.0 -->
+      <article class="ev-card reveal" data-category="debate" id="chhatra-sansad-1">
+        <div class="ev-card-media">
+          <img src="images/event-chhatra-sansad-1.jpg" alt="Chhatra Sansad 1.0 — One Nation One Election debate" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-debate">Debate</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Chhatra Sansad 1.0</h3>
+          <p class="ev-card-text">Parliamentary-style debate on <em>"One Nation, One Election"</em> — held on Dr. B.R. Ambedkar Jayanti. Judged by Prof. Akhilesh Misra, Shri Sumit Pandey, and Shri Sanjiv Jaineet. Participants took an oath upholding equality and justice.</p>
+          <div class="ev-card-meta">
+            <span>Apr 14, 2024</span><span class="ev-dot">·</span><span>Ambedkar Jayanti</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 03 · Voter Awareness Campaign -->
+      <article class="ev-card reveal" data-category="civic" id="voter-awareness">
+        <div class="ev-card-media">
+          <img src="images/event-voter-awareness.jpg" alt="Students forming a human chain for voter awareness at LBS Ground" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-civic">Civic</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Voter Awareness Campaign</h3>
+          <p class="ev-card-text">Election Awareness Programme at LBS Ground, organized with SAC, Cultural Council, and NSS. Under the slogan <em>"First Vote, Must Vote"</em>, 800+ students formed a human chain ahead of the 17th Lok Sabha elections. First 200 registrants received campaign T-shirts.</p>
+          <div class="ev-card-meta">
+            <span>Apr 15, 2024</span><span class="ev-dot">·</span><span>800+ students · LBS Ground</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 04 · DST Lecture by S.K. Varshney -->
+      <article class="ev-card reveal" data-category="lecture" id="dst-lecture">
+        <div class="ev-card-media">
+          <img src="images/event-dst-lecture.jpg" alt="DST Research Funding lecture by Dr. S.K. Varshney" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-lecture">Lecture</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">DST Lecture — Research Funding</h3>
+          <p class="ev-card-text">Session on Research Funding Opportunities by Dr. S.K. Varshney, Advisor & Former Head of International Cooperation at DST. Covered internship programs, travel grants, and doctoral funding. Held in hybrid format with <em>900+ registrations</em> across disciplines.</p>
+          <div class="ev-card-meta">
+            <span>May 21, 2024</span><span class="ev-dot">·</span><span>900+ registrations · Hybrid</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 05 · Tiranga Yatra 2024 -->
+      <article class="ev-card reveal" data-category="yatra" id="tiranga-yatra-2024">
+        <div class="ev-card-media">
+          <img src="images/event-tiranga-2024.jpg" alt="Students holding the tricolour during the Tiranga Yatra 2024" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-yatra">Yatra</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Tiranga Yatra 2024</h3>
+          <p class="ev-card-text">Independence Day march carrying two 500-metre national flags across campus. Initiated by Director Prof. K.K. Pant from the Multi-Activity Centre. Students, faculty, and staff marched chanting "Vande Mataram" and "Bharat Mata Ki Jai". Concluded with a national integrity pledge.</p>
+          <div class="ev-card-meta">
+            <span>Aug 15, 2024</span><span class="ev-dot">·</span><span>Across campus</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 06 · Reviving Bharat Lecture -->
+      <article class="ev-card reveal" data-category="lecture" id="reviving-bharat">
+        <div class="ev-card-media">
+          <img src="images/event-reviving-bharat.jpg" alt="Reviving Bharat seminar at IIT Roorkee" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-lecture">Lecture</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Reviving Bharat — A Scientific Civilisation</h3>
+          <p class="ev-card-text">Seminar titled <em>"Reviving Bharat: A Scientific Civilization and its Relevance in Present Times"</em> by Mr. Aditya Jha, Senior Application Engineer at Oracle and IIT Roorkee alumnus. Explored India's spiritual and scientific heritage in the context of modern challenges.</p>
+          <div class="ev-card-meta">
+            <span>Sep 18, 2024</span><span class="ev-dot">·</span><span>APJ AKB-103, IITR</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 07 · Chhatra Sansad 2.0 -->
+      <article class="ev-card reveal" data-category="debate" id="chhatra-sansad-2">
+        <div class="ev-card-media">
+          <img src="images/event-chhatra-sansad-2.jpg" alt="Chhatra Sansad 2.0 — Life With/Without AI debate" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-debate">Debate</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Chhatra Sansad 2.0</h3>
+          <p class="ev-card-text">Debate on <em>"Life With/Without AI: Maximizing Efficiency or Jeopardizing Human Autonomy?"</em> Participants explored AI's $15.7 trillion projected economic contribution against risks of 300 million job displacements. Judged by Prof. Neha Rajput, Dr. Raghav Chawla, and Shri Ankit Suri.</p>
+          <div class="ev-card-meta">
+            <span>Oct 23, 2024</span><span class="ev-dot">·</span><span>IIT Roorkee</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 08 · Think India National Convention 2024 -->
+      <article class="ev-card reveal" data-category="flagship" id="convention">
+        <div class="ev-card-media">
+          <img src="images/event-convention-2024.jpg" alt="Panel discussion at the Think India National Convention 2024" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-flagship">Flagship</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">National Convention 2024 — Bharat 4.0</h3>
+          <p class="ev-card-text">Three days, 280+ student delegates from IITs, NITs, IIMs, IISc and NLUs — a working room for <em>Bharat 4.0</em>, the India of 2047. Themed sessions on infrastructure, cybersecurity, legal reform, media, and sustainability. 102 student volunteers. Ideathon judged by NITI Aayog and IIT faculty.</p>
+          <div class="ev-card-meta">
+            <span>Dec 21–23, 2024</span><span class="ev-dot">·</span><span>IIT Roorkee</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 09 · Mindset Makeover -->
+      <article class="ev-card reveal" data-category="workshop" id="mindset-makeover">
+        <div class="ev-card-media">
+          <img src="images/event-mindset-makeover.jpg" alt="Mindset Makeover 9-day online challenge" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-workshop">Workshop</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Mindset Makeover</h3>
+          <p class="ev-card-text">A transformative 9-day online challenge blending ancient wisdom with modern strategies. Featured Mr. Aditya Jha on discipline and early rising; Aman Swaraj (PhD, IIT Roorkee) on lessons from the Mahabharata; and Mr. Avdhesh Sharma (Microsoft) on consistency. 110+ participants.</p>
+          <div class="ev-card-meta">
+            <span>Jan 1–9, 2025</span><span class="ev-dot">·</span><span>110+ participants · Online</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 10 · National Youth Day -->
+      <article class="ev-card reveal" data-category="lecture" id="national-youth-day">
+        <div class="ev-card-media">
+          <img src="images/event-national-youth-day.jpg" alt="National Youth Day Vivekananda lecture" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-lecture">Lecture</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">National Youth Day — Vivekananda Lecture</h3>
+          <p class="ev-card-text">Online lecture commemorating Swami Vivekananda's birth anniversary, delivered by Swami Sarvalokananda. Topics included student life, leadership, ideal role models, and problem-solving inspired by Vivekananda's journey. 100+ students participated.</p>
+          <div class="ev-card-meta">
+            <span>Jan 12, 2025</span><span class="ev-dot">·</span><span>100+ students · Online</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 11 · Chhatrapati Shivaji Maharaj Jayanti -->
+      <article class="ev-card reveal" data-category="cultural" id="shivaji-jayanti">
+        <div class="ev-card-media">
+          <img src="images/event-shivaji-jayanti.jpg" alt="Chhatrapati Shivaji Maharaj Jayanti celebration at IIT Roorkee" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-cultural">Cultural</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Chhatrapati Shivaji Maharaj Jayanti</h3>
+          <p class="ev-card-text">A celebration honouring the legacy of one of India's greatest warrior-kings — inaugurated by Prof. Bhavesh Kumar R. Bhalja with the lighting of a ceremonial diya. Vibrant Maharashtrian folk dance performances and a stirring recitation of <em>Powada</em> brought Shivaji's era to life.</p>
+          <div class="ev-card-meta">
+            <span>Feb 21, 2025</span><span class="ev-dot">·</span><span>IIT Roorkee</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 12 · Negotiation Workshop (NitiShala) -->
+      <article class="ev-card reveal" data-category="workshop" id="negotiation-workshop">
+        <div class="ev-card-media">
+          <img src="images/event-negotiation.jpg" alt="NitiShala Policy Negotiation Workshop" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-workshop">Workshop</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">NitiShala — Policy Negotiation Workshop</h3>
+          <p class="ev-card-text">A two-hour policy negotiation workshop by Mr. Nikhil Arya, Community Manager at Rashtram School of Public Leadership — UN Karmaveer Chakra awardee (2021). Students role-played policymakers negotiating port infrastructure, navigating environmental compliance, labour laws, and national development.</p>
+          <div class="ev-card-meta">
+            <span>Feb 22, 2025</span><span class="ev-dot">·</span><span>IIT Roorkee</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 13 · Corporate Compass -->
+      <article class="ev-card reveal" data-category="career" id="corporate-compass">
+        <div class="ev-card-media">
+          <img src="images/event-corporate-compass.jpg" alt="Corporate Compass placement guidance session" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-career">Career</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Corporate Compass</h3>
+          <p class="ev-card-text">Online placement and internship guidance session for second-year students. Speakers: Vedant Vardhan (Quantbox), Yash Tewari (Standard Chartered), and Pradipta Sundar Sahoo (Co-founder, Lawcrats). Guidance on resume-building, LinkedIn strategy, and navigating competitive internship season. 50 participants.</p>
+          <div class="ev-card-meta">
+            <span>Apr 19, 2025</span><span class="ev-dot">·</span><span>50 students · Online</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 14 · Chhatra Sansad 3.0 -->
+      <article class="ev-card reveal" data-category="debate" id="chhatra-sansad-3">
+        <div class="ev-card-media">
+          <img src="images/event-chhatra-sansad-3.jpg" alt="Chhatra Sansad 3.0 — Uniform Civil Code debate" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-debate">Debate</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Chhatra Sansad 3.0</h3>
+          <p class="ev-card-text">Debate on <em>"Uniform Civil Code"</em> — exploring Article 44 of the Constitution and its implications for national integration vs. cultural freedom. Judged by Shri Arun Kanwaji (Supreme Court Advocate). Best Speaker: Ms. Aditi Mehra (Humanities). Runner-Up: Mr. Saurabh Joshi (Civil Engg.).</p>
+          <div class="ev-card-meta">
+            <span>Apr 23, 2025</span><span class="ev-dot">·</span><span>IIT Roorkee</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 15 · Design Workshop -->
+      <article class="ev-card reveal" data-category="workshop" id="design-workshop">
+        <div class="ev-card-media">
+          <img src="images/event-design-workshop.jpg" alt="Graphic and visual design workshop" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-workshop">Workshop</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Design Workshop</h3>
+          <p class="ev-card-text">Two-hour online graphic and visual design workshop by Ar. Sehaj Singh, open to IIT Roorkee students and participants from colleges across India. Covered design principles, Adobe Photoshop, Illustrator, Figma, Canva, and the role of AI in modern design. 60 participants.</p>
+          <div class="ev-card-meta">
+            <span>Apr 27, 2025</span><span class="ev-dot">·</span><span>60 participants · Online</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 16 · Master Your Mind -->
+      <article class="ev-card reveal" data-category="lecture" id="master-your-mind">
+        <div class="ev-card-media">
+          <img src="images/event-master-mind.jpg" alt="Master Your Mind — meditation and Sanatan philosophy lecture" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-lecture">Lecture</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Master Your Mind</h3>
+          <p class="ev-card-text">An evening of meditation, Sanatan philosophy, and inner transformation at the MAC Auditorium. Speaker: Mr. Avedhesh Sharma — IITR alumnus and Software Development Engineer at Microsoft — sharing how ancient Indian wisdom applies to modern student life. <em>650+ participants packed the auditorium.</em></p>
+          <div class="ev-card-meta">
+            <span>Jul 30, 2025</span><span class="ev-dot">·</span><span>650+ attendees · MAC Auditorium</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 17 · Tiranga Yatra 2025 -->
+      <article class="ev-card reveal" data-category="yatra" id="tiranga-yatra-2025">
+        <div class="ev-card-media">
+          <img src="images/event-tiranga-2025.jpg" alt="Students holding the 600-metre tricolour during the Tiranga Yatra 2025" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-yatra">Yatra</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Tiranga Yatra 2025</h3>
+          <p class="ev-card-text">Building on the grand success of 2024, Tiranga Yatra 2025 scaled up to a 600-metre Tiranga carried across campus — with <em>2,000+ students, faculty, staff, and residents</em> participating. Filled with patriotic slogans and a vibrant spirit of national unity on Independence Day.</p>
+          <div class="ev-card-meta">
+            <span>Aug 15, 2025</span><span class="ev-dot">·</span><span>2,000+ participants · Across campus</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 18 · Maati-NITI -->
+      <article class="ev-card reveal" data-category="swadeshi" id="maati-niti">
+        <div class="ev-card-media">
+          <img src="images/event-maati-niti.jpg" alt="Maati-NITI — earthen craft exhibition and pottery workshop" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-swadeshi">Swadeshi</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Maati-NITI — A Return to the Roots</h3>
+          <p class="ev-card-text">Three-day celebration of India's soil-rooted traditions: <em>Prithvi Quest</em> (online quiz, 90 participants) → <em>Maati Mela</em> (terracotta & earthen products exhibition, 5,000 visitors) → <em>Kalp-Mitti</em> pottery workshop led by Ms. Garima Negi with master artisan Shri Shobharam Prajapati (150 participants).</p>
+          <div class="ev-card-meta">
+            <span>Oct 12–15, 2025</span><span class="ev-dot">·</span><span>5,000 visitors · UG Floor, IITR</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 19 · Khadi Mela 2025 -->
+      <article class="ev-card reveal" data-category="swadeshi" id="khadi-mela">
+        <div class="ev-card-media">
+          <img src="images/event-khadi-mela.jpg" alt="Students at the Khadi Mela handicraft exhibition" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-swadeshi">Swadeshi</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Khadi Mela 2025</h3>
+          <p class="ev-card-text">Grand cloth and handicraft exhibition during Diwali at PIC Ground. Showcased Maheshwari suits, Madhubani sarees, Kashmiri suits, Khadi kurtas, Uttarakhandi tweed, Punjabi juttis, and more — nearly <em>5,000 visitors</em> supporting artisans and the spirit of Vocal for Local.</p>
+          <div class="ev-card-meta">
+            <span>Oct 17–20, 2025</span><span class="ev-dot">·</span><span>5,000 visitors · PIC Ground</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 20 · National Youth Day Painting Competition -->
+      <article class="ev-card reveal" data-category="cultural" id="painting-competition">
+        <div class="ev-card-media">
+          <img src="images/event-painting-comp.jpg" alt="National Youth Day painting competition at Saraswati Temple Yoga Hall" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-cultural">Cultural</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">National Youth Day Painting Competition</h3>
+          <p class="ev-card-text">Painting competition at the Saraswati Temple Yoga Hall on the occasion of Youth Day. Participants interpreted three themes — <em>culture, nature, and history</em> — through their own artistic lens. Winners felicitated by Faculty Advisor Prof. Bhavesh Bhalja with prizes recognizing outstanding talent.</p>
+          <div class="ev-card-meta">
+            <span>Jan 18, 2026</span><span class="ev-dot">·</span><span>Saraswati Temple Yoga Hall</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 21 · Parakram Diwas: Blood Donation Camp -->
+      <article class="ev-card reveal" data-category="service" id="parakram-diwas">
+        <div class="ev-card-media">
+          <img src="images/event-parakram-diwas.jpg" alt="Parakram Diwas Blood Donation Camp at SAC, IIT Roorkee" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-service">Service</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Parakram Diwas — Blood Donation Camp</h3>
+          <p class="ev-card-text">Blood Donation Camp on Netaji Subhas Chandra Bose's birth anniversary at SAC, IIT Roorkee. <em>400+ students, staff, scholars, and professors</em> donated blood despite heavy rainfall — a true display of courage and compassion. Supported by government and private blood banks; all donors received mementos.</p>
+          <div class="ev-card-meta">
+            <span>Jan 23, 2026</span><span class="ev-dot">·</span><span>400+ donors · SAC, IITR</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 22 · Chhatra Sansad 4.0 -->
+      <article class="ev-card reveal" data-category="debate" id="chhatra-sansad-4">
+        <div class="ev-card-media">
+          <img src="images/event-chhatra-sansad-4.jpg" alt="Chhatra Sansad 4.0 — Free Schemes debate at APJ-AKB Hall" loading="lazy" />
+          <span class="ev-card-tag ev-card-tag-debate">Debate</span>
+        </div>
+        <div class="ev-card-body">
+          <h3 class="ev-card-title">Chhatra Sansad 4.0</h3>
+          <p class="ev-card-text">Four relentless hours of debate at APJ-AKB Hall on <em>"Are Free Schemes Damaging India's Economy?"</em> — 45 participants, 35 from campus and 10 from beyond, across three rounds. Winners: Mukesh Khadav (1st), Ayushi Gupta (2nd), Siddharth Shukla (3rd).</p>
+          <div class="ev-card-meta">
+            <span>Apr 19, 2026</span><span class="ev-dot">·</span><span>45 participants · APJ-AKB Hall</span>
+          </div>
+        </div>
+      </article>
+
+    </div><!-- /ev-grid -->
+
+    <!-- Back link -->
+    <a href="index.html" class="ev-back">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 6-6m-6 6 6 6" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      Back to homepage
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="footer-mark devnagri">ऋतम्</span>
+        <p class="footer-motto devnagri">श्रम विना न किमपि साध्यम्</p>
+        <p class="footer-motto-en">Without effort, nothing is achievable.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <span class="footer-col-title">Explore</span>
+          <a href="index.html#about">About</a>
+          <a href="index.html#pillars">Vision</a>
+          <a href="events.html">Events</a>
+          <a href="index.html#magazine">Magazine</a>
+          <a href="index.html#team">Team</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">Movement</span>
+          <a href="https://www.thinkindiaofficial.org" target="_blank" rel="noopener">Think India · National</a>
+          <a href="https://www.iitr.ac.in" target="_blank" rel="noopener">IIT Roorkee</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">Find us</span>
+          <a href="mailto:thinkindia@iitr.ac.in">thinkindia@iitr.ac.in</a>
+          <span>IIT Roorkee, 247667</span>
+          <span>Uttarakhand, India</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Think India · IIT Roorkee Chapter. All rights reserved.</span>
+      <span>Built with care, for a New Bharat.</span>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // Year
+    const yr = document.getElementById('year');
+    if (yr) yr.textContent = new Date().getFullYear();
+
+    // Sticky nav
+    const nav = document.getElementById('nav');
+    if (nav) {
+      const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 24);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
+
+    // Mobile menu
+    const toggle = document.querySelector('.nav-toggle');
+    const links  = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        const open = links.classList.toggle('is-open');
+        toggle.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        links.classList.remove('is-open');
+        toggle.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }));
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    reveals.forEach((el, i) => { el.style.transitionDelay = (i % 6) * 55 + 'ms'; });
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+      reveals.forEach(el => io.observe(el));
+    } else {
+      reveals.forEach(el => el.classList.add('is-in'));
+    }
+
+    // Filter logic
+    const grid    = document.getElementById('ev-grid');
+    const cards   = Array.from(grid.querySelectorAll('.ev-card'));
+    const btns    = document.querySelectorAll('.ev-filter-btn');
+    const counter = document.getElementById('ev-visible-count');
+
+    function applyFilter(filter) {
+      let visible = 0;
+      cards.forEach(card => {
+        const match = filter === 'all' || card.dataset.category === filter;
+        card.classList.toggle('is-hidden', !match);
+        if (match) visible++;
+      });
+      counter.textContent = visible;
+
+      // No results message
+      let noRes = grid.querySelector('.ev-no-results');
+      if (visible === 0) {
+        if (!noRes) {
+          noRes = document.createElement('p');
+          noRes.className = 'ev-no-results';
+          noRes.textContent = 'No events in this category yet.';
+          grid.appendChild(noRes);
+        }
+      } else if (noRes) {
+        noRes.remove();
+      }
+    }
+
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        btns.forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        applyFilter(btn.dataset.filter);
+      });
+    });
+
+    // Handle anchor links from index.html (e.g. events.html#convention)
+    const hash = location.hash.slice(1);
+    if (hash) {
+      const target = document.getElementById(hash);
+      if (target) {
+        setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
+        target.style.outline = '2px solid var(--saffron)';
+        target.style.borderRadius = '4px';
+        setTimeout(() => target.style.outline = '', 2500);
+      }
+    }
+  })();
+  </script>
+</body>
+</html>
