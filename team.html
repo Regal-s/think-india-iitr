@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team — Think India · IIT Roorkee</title>
+  <meta name="description" content="The people behind Think India, IIT Roorkee — faculty, convenors, and the core team driving every event, initiative, and idea." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Tiro+Devanagari+Sanskrit:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+
+    /* ── Team-page styles ── */
+
+    .tm-hero {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: clamp(120px, 18vh, 200px) var(--shell-pad-x) clamp(48px, 7vw, 80px);
+      position: relative;
+    }
+    .tm-hero-glow {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: min(500px, 80vw);
+      height: 340px;
+      background: radial-gradient(ellipse, rgba(201,162,75,0.13) 0%, transparent 70%);
+      pointer-events: none;
+      filter: blur(14px);
+    }
+    .tm-hero-rule {
+      position: absolute;
+      top: clamp(100px, 14vh, 150px);
+      left: var(--shell-pad-x); right: var(--shell-pad-x);
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--line-strong) 14%, var(--line-strong) 86%, transparent);
+    }
+    .tm-hero-kicker {
+      font-family: var(--f-mono);
+      font-size: 11.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .tm-hero-kicker a { color: var(--ink-muted); transition: color 0.2s; }
+    .tm-hero-kicker a:hover { color: var(--saffron); }
+    .tm-hero-kicker span { color: var(--line-strong); }
+
+    .tm-hero-title {
+      font-family: var(--f-display);
+      font-weight: 300;
+      font-size: clamp(44px, 9vw, 110px);
+      line-height: 0.94;
+      letter-spacing: -0.025em;
+      margin: 0 0 clamp(18px, 3vw, 28px);
+      color: var(--ink);
+    }
+    .tm-hero-title em { font-style: italic; color: var(--gold-soft); }
+
+    .tm-hero-deck {
+      font-size: clamp(16px, 1.6vw, 19px);
+      line-height: 1.6;
+      color: var(--ink-soft);
+      max-width: 52ch;
+      margin: 0;
+    }
+
+    /* ── Section wrapper ── */
+    .tm-section {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: clamp(48px, 7vw, 80px) var(--shell-pad-x);
+    }
+    .tm-section + .tm-section {
+      padding-top: 0;
+    }
+
+    .tm-section-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: clamp(32px, 4vw, 48px);
+    }
+    .tm-section-label-text {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+    .tm-section-label-line {
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    /* ── Faculty card (single, larger) ── */
+    .tm-faculty-wrap {
+      display: flex;
+      justify-content: center;
+    }
+    .tm-faculty-card {
+      display: flex;
+      align-items: center;
+      gap: clamp(28px, 4vw, 56px);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-top: 2px solid var(--gold);
+      border-radius: 4px;
+      padding: clamp(28px, 4vw, 48px) clamp(28px, 5vw, 60px);
+      max-width: 680px;
+      width: 100%;
+    }
+
+    .tm-avatar {
+      flex-shrink: 0;
+      width: 96px; height: 96px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1px solid var(--line-strong);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .tm-avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .tm-avatar-initials {
+      font-family: var(--f-display);
+      font-weight: 600;
+      font-size: 28px;
+      color: var(--gold);
+      user-select: none;
+      letter-spacing: -0.02em;
+    }
+    .tm-avatar-placeholder {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 40% 35%, rgba(201,162,75,0.18), rgba(16,20,28,0.9));
+    }
+
+    .tm-faculty-info {}
+    .tm-faculty-name {
+      font-family: var(--f-display);
+      font-weight: 500;
+      font-size: clamp(22px, 2.8vw, 30px);
+      color: var(--ink);
+      margin: 0 0 6px;
+      line-height: 1.15;
+    }
+    .tm-faculty-role {
+      font-family: var(--f-mono);
+      font-size: 11.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--saffron);
+      margin-bottom: 10px;
+    }
+    .tm-faculty-dept {
+      font-size: 14.5px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    /* ── Core team grid ── */
+    .tm-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(16px, 2.5vw, 28px);
+    }
+
+    .tm-card {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: clamp(24px, 3vw, 36px) clamp(20px, 2.5vw, 30px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+    }
+    .tm-card:hover {
+      border-color: var(--line-strong);
+      transform: translateY(-4px);
+    }
+
+    .tm-card .tm-avatar {
+      width: 88px; height: 88px;
+      margin-bottom: 20px;
+    }
+    .tm-card .tm-avatar-initials { font-size: 24px; }
+
+    .tm-card-name {
+      font-family: var(--f-display);
+      font-weight: 500;
+      font-size: clamp(18px, 2vw, 22px);
+      color: var(--ink);
+      margin: 0 0 8px;
+      line-height: 1.2;
+    }
+
+    .tm-card-badge {
+      display: inline-block;
+      font-family: var(--f-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--saffron);
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-bottom: 10px;
+    }
+
+    .tm-card-role {
+      font-size: 13.5px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* ── Photo-upload notice ── */
+    .tm-photo-notice {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 var(--shell-pad-x) clamp(48px, 7vw, 80px);
+    }
+    .tm-notice-inner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--gold);
+      border-radius: 3px;
+      padding: 16px 22px;
+    }
+    .tm-notice-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .tm-notice-text {
+      font-family: var(--f-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+    .tm-notice-text strong { color: var(--gold-soft); }
+
+    /* ── "Coming soon" members section ── */
+    .tm-coming-soon {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 var(--shell-pad-x) clamp(48px, 7vw, 80px);
+      text-align: center;
+    }
+    .tm-coming-soon-inner {
+      background: var(--surface);
+      border: 1px dashed var(--line-strong);
+      border-radius: 4px;
+      padding: clamp(40px, 6vw, 72px) var(--shell-pad-x);
+    }
+    .tm-coming-soon-icon {
+      font-family: var(--f-display);
+      font-size: 48px;
+      color: var(--gold);
+      opacity: 0.4;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .tm-coming-soon-title {
+      font-family: var(--f-display);
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(22px, 3vw, 32px);
+      color: var(--ink-soft);
+      margin: 0 0 10px;
+    }
+    .tm-coming-soon-sub {
+      font-family: var(--f-mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: var(--ink-muted);
+      margin: 0;
+    }
+
+    /* ── Divider ornament ── */
+    .tm-divider {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 var(--shell-pad-x) clamp(36px, 5vw, 56px);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .tm-divider::before,
+    .tm-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+    .tm-divider-mark {
+      font-family: var(--f-display);
+      font-style: italic;
+      font-size: 22px;
+      color: var(--gold);
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 860px) {
+      .tm-grid { grid-template-columns: repeat(2, 1fr); }
+      .tm-faculty-card { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 520px) {
+      .tm-grid { grid-template-columns: 1fr; max-width: 340px; margin-left: auto; margin-right: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a href="index.html" class="brand" aria-label="Think India IIT Roorkee — home">
+      <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round">
+          <circle cx="24" cy="24" r="7.5" fill="currentColor" fill-opacity="0.1"/>
+          <line x1="24" y1="3" x2="24" y2="9"/>
+          <line x1="24" y1="39" x2="24" y2="45"/>
+          <line x1="3" y1="24" x2="9" y2="24"/>
+          <line x1="39" y1="24" x2="45" y2="24"/>
+          <line x1="9.1" y1="9.1" x2="13.4" y2="13.4"/>
+          <line x1="34.6" y1="34.6" x2="38.9" y2="38.9"/>
+          <line x1="38.9" y1="9.1" x2="34.6" y2="13.4"/>
+          <line x1="13.4" y1="34.6" x2="9.1" y2="38.9"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(22.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(67.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(112.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(157.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(202.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(247.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(292.5 24 24)"/>
+          <line x1="24" y1="6.5" x2="24" y2="11.5" transform="rotate(337.5 24 24)"/>
+        </g>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">Think India</span>
+        <span class="brand-sub">IIT Roorkee</span>
+      </span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html#about">About</a>
+      <a href="index.html#pillars">Vision</a>
+      <a href="events.html">Events</a>
+      <a href="index.html#magazine">ऋतम्</a>
+      <a href="team.html" style="color:var(--saffron)">Team</a>
+      <a href="index.html#connect" class="nav-cta">Connect →</a>
+    </nav>
+
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- HERO -->
+  <div class="tm-hero">
+    <div class="tm-hero-glow" aria-hidden="true"></div>
+    <div class="tm-hero-rule" aria-hidden="true"></div>
+
+    <p class="tm-hero-kicker">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      The Team
+    </p>
+
+    <h1 class="tm-hero-title">The people<br>behind <em>it.</em></h1>
+    <p class="tm-hero-deck">Every event, every debate, every yatra — powered by a group of people who care deeply about where this country is headed.</p>
+  </div>
+
+  <!-- FACULTY -->
+  <section class="tm-section reveal">
+    <div class="tm-section-label">
+      <span class="tm-section-label-text">Faculty</span>
+      <span class="tm-section-label-line"></span>
+    </div>
+
+    <div class="tm-faculty-wrap">
+      <div class="tm-faculty-card">
+        <div class="tm-avatar" style="width:110px;height:110px;">
+          <div class="tm-avatar-placeholder"></div>
+          <span class="tm-avatar-initials" style="font-size:30px;">BB</span>
+        </div>
+        <div class="tm-faculty-info">
+          <p class="tm-faculty-role">Faculty In-Charge</p>
+          <h2 class="tm-faculty-name">Prof. Bhaveshkumar R. Bhalja</h2>
+          <p class="tm-faculty-dept">Department of Electrical Engineering<br>Indian Institute of Technology Roorkee</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tm-divider"><span class="tm-divider-mark">✦</span></div>
+
+  <!-- CORE TEAM -->
+  <section class="tm-section reveal">
+    <div class="tm-section-label">
+      <span class="tm-section-label-text">Core Team · 2024–25</span>
+      <span class="tm-section-label-line"></span>
+    </div>
+
+    <div class="tm-grid">
+
+      <!-- Convenor -->
+      <div class="tm-card reveal">
+        <div class="tm-avatar">
+          <div class="tm-avatar-placeholder" style="background: radial-gradient(circle at 40% 35%, rgba(228,146,59,0.22), rgba(16,20,28,0.9));"></div>
+          <span class="tm-avatar-initials">SS</span>
+        </div>
+        <h3 class="tm-card-name">Sonali Soni</h3>
+        <span class="tm-card-badge">Convenor</span>
+        <p class="tm-card-role">Think India, IIT Roorkee</p>
+      </div>
+
+      <!-- Co-Convener Operations -->
+      <div class="tm-card reveal">
+        <div class="tm-avatar">
+          <div class="tm-avatar-placeholder" style="background: radial-gradient(circle at 40% 35%, rgba(91,141,110,0.25), rgba(16,20,28,0.9));"></div>
+          <span class="tm-avatar-initials">SGA</span>
+        </div>
+        <h3 class="tm-card-name">Shashwat Garg Agrawal</h3>
+        <span class="tm-card-badge" style="background:var(--green);">Co-Convener</span>
+        <p class="tm-card-role">Operations &amp; Planning</p>
+      </div>
+
+      <!-- Co-Convener Media -->
+      <div class="tm-card reveal">
+        <div class="tm-avatar">
+          <div class="tm-avatar-placeholder" style="background: radial-gradient(circle at 40% 35%, rgba(58,124,138,0.28), rgba(16,20,28,0.9));"></div>
+          <span class="tm-avatar-initials">SS</span>
+        </div>
+        <h3 class="tm-card-name">Shekhar Suman</h3>
+        <span class="tm-card-badge" style="background:var(--green);">Co-Convener</span>
+        <p class="tm-card-role">Media &amp; Promotions</p>
+      </div>
+
+      <!-- Co-Convener Editorial -->
+      <div class="tm-card reveal">
+        <div class="tm-avatar">
+          <div class="tm-avatar-placeholder" style="background: radial-gradient(circle at 40% 35%, rgba(138,74,58,0.28), rgba(16,20,28,0.9));"></div>
+          <span class="tm-avatar-initials">RO</span>
+        </div>
+        <h3 class="tm-card-name">Ragita Ojha</h3>
+        <span class="tm-card-badge" style="background:var(--green);">Co-Convener</span>
+        <p class="tm-card-role">Editorial &amp; Documentation</p>
+      </div>
+
+      <!-- Co-Convener Web -->
+      <div class="tm-card reveal">
+        <div class="tm-avatar">
+          <div class="tm-avatar-placeholder" style="background: radial-gradient(circle at 40% 35%, rgba(107,79,160,0.28), rgba(16,20,28,0.9));"></div>
+          <span class="tm-avatar-initials">AS</span>
+        </div>
+        <h3 class="tm-card-name">Ayush Sharma</h3>
+        <span class="tm-card-badge" style="background:var(--green);">Co-Convener</span>
+        <p class="tm-card-role">Web</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMING SOON -->
+  <div class="tm-coming-soon reveal">
+    <div class="tm-coming-soon-inner">
+      <span class="tm-coming-soon-icon">+</span>
+      <p class="tm-coming-soon-title">More members coming soon.</p>
+      <p class="tm-coming-soon-sub">The full team — organisers, writers, designers, photographers and volunteers — will be listed here shortly.</p>
+    </div>
+  </div>
+
+  <!-- PHOTO NOTICE -->
+  <div class="tm-photo-notice reveal">
+    <div class="tm-notice-inner">
+      <span class="tm-notice-icon">📷</span>
+      <p class="tm-notice-text"><strong>Photos coming soon.</strong> Member photos will be added shortly. Monogram avatars are placeholders.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="footer-mark devnagri">ऋतम्</span>
+        <p class="footer-motto devnagri">श्रम विना न किमपि साध्यम्</p>
+        <p class="footer-motto-en">Without effort, nothing is achievable.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <span class="footer-col-title">Explore</span>
+          <a href="index.html#about">About</a>
+          <a href="index.html#pillars">Vision</a>
+          <a href="events.html">Events</a>
+          <a href="index.html#magazine">Magazine</a>
+          <a href="team.html">Team</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">Movement</span>
+          <a href="https://www.thinkindiaofficial.org" target="_blank" rel="noopener">Think India · National</a>
+          <a href="https://www.iitr.ac.in" target="_blank" rel="noopener">IIT Roorkee</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">Find us</span>
+          <a href="mailto:thinkindia@iitr.ac.in">thinkindia@iitr.ac.in</a>
+          <span>IIT Roorkee, 247667</span>
+          <span>Uttarakhand, India</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Think India · IIT Roorkee Chapter. All rights reserved.</span>
+      <span>Built with care, for a New Bharat.</span>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // Year
+    const yr = document.getElementById('year');
+    if (yr) yr.textContent = new Date().getFullYear();
+
+    // Sticky nav
+    const nav = document.getElementById('nav');
+    if (nav) {
+      const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 24);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
+
+    // Mobile menu
+    const toggle = document.querySelector('.nav-toggle');
+    const links  = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        const open = links.classList.toggle('is-open');
+        toggle.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        links.classList.remove('is-open');
+        toggle.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }));
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    reveals.forEach((el, i) => { el.style.transitionDelay = (i % 5) * 80 + 'ms'; });
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.07 });
+      reveals.forEach(el => io.observe(el));
+    } else {
+      reveals.forEach(el => el.classList.add('is-in'));
+    }
+
+  })();
+  </script>
+</body>
+</html>
